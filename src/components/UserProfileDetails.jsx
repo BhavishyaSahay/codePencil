@@ -42,7 +42,7 @@ export default function UserProfileDetails() {
             {...SlideUpOut}
             className="bg-secondary absolute top-16 right-0 px-4 py-3 rounded-xl shadow-md z-10 flex flex-col items-start justify-start gap-4 min-w-[225px]"
           >
-            {Menus &&
+            {/* {Menus &&
               Menus.map((menu) => (
                 <Link
                   to={menu.url}
@@ -51,7 +51,7 @@ export default function UserProfileDetails() {
                 >
                   {menu.name}
                 </Link>
-              ))}
+              ))} */}
             <motion.p
               onClick={signOutAction}
               whileTap={{ scale: 0.9 }}

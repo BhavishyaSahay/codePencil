@@ -8,10 +8,18 @@ import {
 } from "react-router-dom";
 import { Home, NewProject } from "./container";
 import { auth, db } from "./config/firebase.config";
-import { setDoc, doc } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  collection,
+  orderBy,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
 import { Spinner } from "./components";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "./context/actions/userActions";
+import { SET_PROJECTS } from "./context/actions/projectActions";
 
 export default function App() {
   const navigate = useNavigate();
@@ -30,7 +38,7 @@ export default function App() {
 
             // Navigate to /home/projects only if the user is not already on another route like /newProject
             if (location.pathname === "/home/auth") {
-              navigate("/home/projects", { replace: true });
+              navigate("/home", { replace: true });
             }
           }
         );
@@ -46,6 +54,21 @@ export default function App() {
 
     return () => unsubscribe();
   }, [navigate, location.pathname, dispatch]);
+
+  // useEffect(() => {
+  //   const projectQuery = query(
+  //     collection(db, "Projects"),
+  //     orderBy("id", "desc")
+  //   );
+
+  //   const unsubscribe = onSnapshot(projectQuery, (querySnaps) => {
+  //     const projectList = querySnaps.docs.map((doc) => doc.data());
+  //     dispatch(SET_PROJECTS(projectList));
+  //     console.log("projectList", projectList);
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
 
   return (
     <>

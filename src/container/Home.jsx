@@ -6,12 +6,17 @@ import { motion } from "framer-motion";
 import { Link, Route, Routes } from "react-router-dom";
 import { Logo } from "../assests";
 import { Projects, SignUp } from "../container";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserProfileDetails } from "../components";
+import { SET_SEARCH_TERM } from "../context/actions/searchActions";
 
 export default function Home() {
   const [isSideMenu, setIsSideMenu] = useState(false);
   const user = useSelector((state) => state.user?.user);
+  const searchTerm = useSelector((state) =>
+    state.searchTerm?.searchTerm ? state.searchTerm?.searchTerm : ""
+  );
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -21,13 +26,13 @@ export default function Home() {
         } min-h-screen max-h-screen relative bg-secondary px-3 py-6 flex flex-col items-center justify-start gap-4 transition-all duration-200 ease-in-out`}
       >
         {/* anchor section */}
-        <motion.div
+        {/* <motion.div
           whileTap={{ scale: 0.9 }}
           onClick={() => setIsSideMenu(!isSideMenu)}
           className="w-8 h-8 bg-secondary rounded-tr-lg rounded-br-lg absolute -right-6 flex items-center justify-center cursor-pointer"
-        >
-          <HiChevronDoubleLeft className="text-white text-xl" />
-        </motion.div>
+        > */}
+        {/* <HiChevronDoubleLeft className="text-white text-xl" /> */}
+        {/* </motion.div> */}
 
         <div className="overflow-hidden w-full flex flex-col gap-4">
           {/* logo */}
@@ -69,17 +74,20 @@ export default function Home() {
         {/* top-section */}
         <div className="w-full flex items-center justify-between gap-3">
           {/* search */}
-          <div className="bg-secondary w-full px-4 py-3 rounded-md flex items-center justify-center gap-3">
-            <FaSearch className="text-2xl text-primaryText" />
-            <input
-              type="text"
-              className="flex-1 px-4 py-1 text-xl bg-transparent outline-none border-none text-primaryText placholder:text-gray-600"
-              placeholder="Search Here..."
-            ></input>
-          </div>
-
+          {user && (
+            <div className="bg-secondary w-full px-4 py-3 rounded-md flex items-center justify-center gap-3">
+              <FaSearch className="text-2xl text-primaryText" />
+              <input
+                type="text"
+                value={searchTerm}
+                className="flex-1 px-4 py-1 text-xl bg-transparent outline-none border-none text-primaryText placholder:text-gray-600"
+                placeholder="Search Here..."
+                onChange={(e) => dispatch(SET_SEARCH_TERM(e.target.value))}
+              ></input>
+            </div>
+          )}
           {/* profile section */}
-          {!user && (
+          {/* {!user && (
             <motion.div
               whileTap={{ scale: 0.9 }}
               className="flex items-center justify-center gap-3"
@@ -91,7 +99,7 @@ export default function Home() {
                 SignUp
               </Link>
             </motion.div>
-          )}
+          )} */}
 
           {user && <UserProfileDetails />}
         </div>
