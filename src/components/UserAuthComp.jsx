@@ -1,8 +1,6 @@
-import { text } from "@fortawesome/fontawesome-svg-core";
-import { useScroll } from "framer-motion";
-import React, { useState } from "react";
-import { FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
+import React, { useState } from "react";
 
 export default function UserAuthComp({
   label,
@@ -27,11 +25,12 @@ export default function UserAuthComp({
       setGetEmailStatus(status);
     }
   };
+
   return (
-    <div className="flex flex-col items-start justify-start gap-1">
-      <label className="text-sm text-gray-300">{label}</label>
+    <div className="flex flex-col items-start justify-start gap-1 w-full">
+      <label className="text-xs md:text-sm text-gray-300">{label}</label>
       <div
-        className={`flex items-center justify-center gap-3 w-full md:w-96 rounded-md px-4 py-1 bg-gray-100
+        className={`flex items-center justify-center gap-3 w-full sm:w-64 md:w-80 lg:w-96 rounded-md px-2 md:px-4 py-1 bg-gray-100
         ${
           !isEmailValid &&
           placeholder === "Email" &&
@@ -39,15 +38,14 @@ export default function UserAuthComp({
           "border-2 border-red-500"
         }`}
       >
-        <Icon className="text-text555 text-2xl" />
+        <Icon className="text-text555 text-xl md:text-2xl" />
         <input
           type={isPass && showPass ? "password" : "text"}
           placeholder={placeholder}
-          className="flex-1 w-full h h-full py-2 outline-none border-none bg-transparent text-text555 text-lg"
+          className="flex-1 w-full py-2 outline-none border-none bg-transparent text-text555 text-sm md:text-lg"
           value={value}
           onChange={handleTextChange}
         />
-
         {isPass && (
           <motion.div
             onClick={() => setShowPass(!showPass)}
@@ -55,9 +53,9 @@ export default function UserAuthComp({
             className="cursor-pointer"
           >
             {showPass ? (
-              <FaEyeSlash className="text-text555 text-2xl" />
+              <FaEyeSlash className="text-text555 text-xl md:text-2xl" />
             ) : (
-              <FaEye className="text-text555 text-2xl" />
+              <FaEye className="text-text555 text-xl md:text-2xl" />
             )}
           </motion.div>
         )}

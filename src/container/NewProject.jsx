@@ -74,7 +74,7 @@ export default function NewProject() {
       </AnimatePresence>
 
       {/* header section */}
-      <header className="w-full flex items-center justify-between px-12 py-4">
+      <header className="w-full flex flex-col md:flex-row items-center justify-between px-6 sm:px-12 py-4">
         <div className="flex items-center justify-center gap-6">
           <div className="flex flex-col justify-start items-start">
             {/* title */}
@@ -143,11 +143,11 @@ export default function NewProject() {
 
         {/* user section */}
         {user && (
-          <div className="flex gap-2 items-center justify-center">
+          <div className="flex gap-2 items-center justify-center mt-4 md:mt-0">
             <motion.button
               onClick={saveProgram}
               whileTap={{ scale: 0.9 }}
-              className="px-6 py-4 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
             >
               Save
             </motion.button>
@@ -173,9 +173,11 @@ export default function NewProject() {
             {/* HTML Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaHtml5 className="text-xl text-red-500" />
-                  <p className="text-primaryText font-semibold">HTML</p>
+                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaHtml5 className="text-lg sm:text-xl text-red-500" />
+                  <p className="text-primaryText font-semibold text-sm sm:text-base">
+                    HTML
+                  </p>
                 </div>
               </div>
               <div className="w-full px-2">
@@ -194,9 +196,11 @@ export default function NewProject() {
             {/* CSS Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaCss3 className="text-xl text-sky-500" />
-                  <p className="text-primaryText font-semibold">CSS</p>
+                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaCss3 className="text-lg sm:text-xl text-sky-500" />
+                  <p className="text-primaryText font-semibold text-sm sm:text-base">
+                    CSS
+                  </p>
                 </div>
               </div>
               <div className="w-full px-2">
@@ -215,9 +219,11 @@ export default function NewProject() {
             {/* JS Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaJs className="text-xl text-yellow-500" />
-                  <p className="text-primaryText font-semibold">JS</p>
+                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaJs className="text-lg sm:text-xl text-yellow-500" />
+                  <p className="text-primaryText font-semibold text-sm sm:text-base">
+                    JS
+                  </p>
                 </div>
               </div>
               <div className="w-full px-2">
@@ -245,10 +251,9 @@ export default function NewProject() {
             <iframe
               title="Result"
               srcDoc={output}
+              className="w-full h-full"
               style={{
                 border: "none",
-                width: "100%",
-                height: "100%",
               }}
             />
           </div>

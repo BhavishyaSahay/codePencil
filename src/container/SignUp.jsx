@@ -65,10 +65,12 @@ export default function SignUp() {
 
   return (
     <div className="w-full py-6">
-      <div className="w-full flex flex-col items-center justify-center py-8">
-        <p className="py-12 text-2xl text-primaryText">Join With us!</p>
+      <div className="w-full flex flex-col items-center justify-center py-6 md:py-8">
+        <p className="py-6 md:py-12 text-xl md:text-2xl text-primaryText">
+          Join With Us!
+        </p>
 
-        <div className="px-8 w-full md:w-auto py-4 rounded-xl bg-secondary shadow-md flex flex-col items-center justify-center gap-8">
+        <div className="px-4 md:px-8 w-full md:w-auto py-4 rounded-xl bg-secondary shadow-md flex flex-col items-center justify-center gap-6 md:gap-8">
           {/* email */}
           <UserAuthComp
             label="Email"
@@ -90,42 +92,41 @@ export default function SignUp() {
           />
 
           {/* alert */}
-
           <AnimatePresence>
             {alert && (
               <motion.p
                 key={"Alert Message"}
                 {...fadeOut}
-                className="text-red-500"
+                className="text-red-500 text-sm md:text-base"
               >
                 {alertMsg}
               </motion.p>
             )}
           </AnimatePresence>
-          {/* login button */}
+
+          {/* login/signup button */}
           {!isLogin ? (
             <motion.div
               onClick={createNewUser}
               whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-500"
+              className="flex items-center justify-center w-full py-2 md:py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-500"
             >
-              <p className="text-xl text-white">Sign Up</p>
+              <p className="text-lg md:text-xl text-white">Sign Up</p>
             </motion.div>
           ) : (
             <motion.div
               onClick={loginWithEmailPassword}
               whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-center w-full py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-500"
+              className="flex items-center justify-center w-full py-2 md:py-3 rounded-xl hover:bg-emerald-400 cursor-pointer bg-emerald-500"
             >
-              <p className="text-xl text-white">Login</p>
+              <p className="text-lg md:text-xl text-white">Login</p>
             </motion.div>
           )}
 
           {/* account text section */}
-
           {!isLogin ? (
-            <p className="text-sm text-primaryText flex items-center justify-center gap-3">
-              Already Have an account !{" "}
+            <p className="text-xs md:text-sm text-primaryText flex items-center justify-center gap-1 md:gap-3">
+              Already Have an account?
               <span
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-emerald-500 cursor-pointer"
@@ -134,8 +135,8 @@ export default function SignUp() {
               </span>
             </p>
           ) : (
-            <p className="text-sm text-primaryText flex items-center justify-center gap-3">
-              Doesn't Have an account?{" "}
+            <p className="text-xs md:text-sm text-primaryText flex items-center justify-center gap-1 md:gap-3">
+              Don't have an account?
               <span
                 onClick={() => setIsLogin(!isLogin)}
                 className="text-emerald-500 cursor-pointer"
@@ -146,39 +147,41 @@ export default function SignUp() {
           )}
 
           {/* or section */}
-
-          <div className="flex items-center justify-center gap-12">
-            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-24"></div>
-            <p className="text-sm text-[rgba(256,256,256,0.2)]">OR</p>
-            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-24"></div>
+          <div className="flex items-center justify-center gap-6 md:gap-12">
+            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-12 md:w-24"></div>
+            <p className="text-xs md:text-sm text-[rgba(256,256,256,0.2)]">
+              OR
+            </p>
+            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-12 md:w-24"></div>
           </div>
-          {/* sign in with google */}
 
+          {/* sign in with google */}
           <motion.div
             onClick={signInWithGoogle}
-            className="flex items-center justify-center gap-3 bg-[rgba(256,256,256,0.2)] backdrop-blur-md w-full py-3 rounded-xl hover: bg-[rgba(256,256,256,0.4)] cursor-pointer"
+            className="flex items-center justify-center gap-2 md:gap-3 bg-[rgba(256,256,256,0.2)] backdrop-blur-md w-full py-2 md:py-3 rounded-xl hover: bg-[rgba(256,256,256,0.4)] cursor-pointer"
             whileTap={{ scale: 0.9 }}
           >
-            <FcGoogle className="text-3xl" />
-            <p className="text-white text-xl">Sign In with Google</p>
+            <FcGoogle className="text-2xl md:text-3xl" />
+            <p className="text-white text-lg md:text-xl">Sign In with Google</p>
           </motion.div>
 
           {/* or section */}
-          <div className="flex items-center justify-center gap-12">
-            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-24"></div>
-            <p className="text-sm text-[rgba(256,256,256,0.2)]">OR</p>
-            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-24"></div>
+          <div className="flex items-center justify-center gap-6 md:gap-12">
+            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-12 md:w-24"></div>
+            <p className="text-xs md:text-sm text-[rgba(256,256,256,0.2)]">
+              OR
+            </p>
+            <div className="h-[1px] bg-[rgba(256,256,256,0.2)] rounded-md w-12 md:w-24"></div>
           </div>
 
           {/* sign in with github */}
-
           <motion.div
             onClick={signInWithGithub}
-            className="flex items-center justify-center gap-3 bg-[rgba(256,256,256,0.2)] backdrop-blur-md w-full py-3 rounded-xl hover: bg-[rgba(256,256,256,0.4)] cursor-pointer"
+            className="flex items-center justify-center gap-2 md:gap-3 bg-[rgba(256,256,256,0.2)] backdrop-blur-md w-full py-2 md:py-3 rounded-xl hover:bg-[rgba(256,256,256,0.4)] cursor-pointer"
             whileTap={{ scale: 0.9 }}
           >
-            <FaGithub className="text-3xl" />
-            <p className="text-white text-xl">Sign In with Github</p>
+            <FaGithub className="text-2xl md:text-3xl" />
+            <p className="text-white text-lg md:text-xl">Sign In with Github</p>
           </motion.div>
         </div>
       </div>

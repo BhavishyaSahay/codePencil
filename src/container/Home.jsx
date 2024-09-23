@@ -20,90 +20,69 @@ export default function Home() {
 
   return (
     <>
+      {/* Sidebar */}
       <div
-        className={`w-2${
-          isSideMenu ? "w-2" : "flex-[0.2] xl:flex-[0.2]"
+        className={`${
+          isSideMenu ? "w-16" : "w-16 sm:w-20 md:w-1/4 xl:w-1/5"
         } min-h-screen max-h-screen relative bg-secondary px-3 py-6 flex flex-col items-center justify-start gap-4 transition-all duration-200 ease-in-out`}
       >
-        {/* anchor section */}
-        {/* <motion.div
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsSideMenu(!isSideMenu)}
-          className="w-8 h-8 bg-secondary rounded-tr-lg rounded-br-lg absolute -right-6 flex items-center justify-center cursor-pointer"
-        > */}
-        {/* <HiChevronDoubleLeft className="text-white text-xl" /> */}
-        {/* </motion.div> */}
-
-        <div className="overflow-hidden w-full flex flex-col gap-4">
-          {/* logo */}
-
+        <div className="w-full flex flex-col gap-4">
+          {/* Logo */}
           <Link to={"/home"}>
             <img
               src={Logo}
               alt="Logo"
-              className="object-contain w-60 h-48"
-            ></img>
+              className="object-contain w-24 h-24 sm:w-32 sm:h-32 lg:w-40 lg:h-40"
+            />
           </Link>
 
-          {/* start coding */}
-
+          {/* Start Coding Button */}
           <Link to={"/newProject"}>
             <div className="px-6 py-3 flex items-center justify-center rounded-xl border border-gray-400 cursor-pointer group hover:border-gray-200">
-              <p className="text-gray-400 group hover:text-gray-200 capitalize">
+              <p className="text-gray-400 group-hover:text-gray-200 capitalize text-sm md:text-base">
                 Start Coding
               </p>
             </div>
           </Link>
 
-          {/* home nav */}
-
+          {/* Home Nav */}
           {user && (
             <Link
               to={"/home/projects"}
-              className="flex items-center justify-center gap-6"
+              className="flex items-center justify-center gap-2 sm:gap-4"
             >
-              <MdHome className="text-primaryText text-xl">
-                <p>Home</p>
-              </MdHome>
+              <MdHome className="text-primaryText text-xl" />
+              <p className="hidden sm:block text-primaryText text-sm md:text-base">
+                Home
+              </p>
             </Link>
           )}
         </div>
       </div>
 
-      <div className="flex-1 min-h-screen max-h-screen overflow-y-scroll h-full flex flex-col items-start justify-start px-4 md:px-12 py-4 md:py-12">
-        {/* top-section */}
+      {/* Main content */}
+      <div className="flex-1 min-h-screen max-h-screen overflow-y-scroll h-full flex flex-col items-start justify-start px-2 sm:px-6 lg:px-12 py-4 md:py-8">
+        {/* Top Section */}
         <div className="w-full flex items-center justify-between gap-3">
-          {/* search */}
+          {/* Search Bar */}
           {user && (
-            <div className="bg-secondary w-full px-4 py-3 rounded-md flex items-center justify-center gap-3">
-              <FaSearch className="text-2xl text-primaryText" />
+            <div className="bg-secondary w-full px-4 py-3 rounded-md flex items-center gap-3">
+              <FaSearch className="text-lg md:text-xl text-primaryText" />
               <input
                 type="text"
                 value={searchTerm}
-                className="flex-1 px-4 py-1 text-xl bg-transparent outline-none border-none text-primaryText placholder:text-gray-600"
-                placeholder="Search Here..."
+                className="flex-1 text-sm md:text-base lg:text-lg bg-transparent outline-none border-none text-primaryText placeholder:text-gray-600"
+                placeholder="Search here..."
                 onChange={(e) => dispatch(SET_SEARCH_TERM(e.target.value))}
-              ></input>
+              />
             </div>
           )}
-          {/* profile section */}
-          {/* {!user && (
-            <motion.div
-              whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-center gap-3"
-            >
-              <Link
-                to={"/home/auth"}
-                className="bg-emerald-500 px-6 py-2 rounded-md text-white text-xl cursor-pointer hover: bg-emerald-700"
-              >
-                SignUp
-              </Link>
-            </motion.div>
-          )} */}
 
+          {/* Profile Section */}
           {user && <UserProfileDetails />}
         </div>
-        {/* bottom section */}
+
+        {/* Bottom Section (Routes) */}
         <div className="w-full">
           <Routes>
             <Route path="/*" element={<Projects />} />
