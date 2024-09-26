@@ -8,7 +8,7 @@ import { onSnapshot, collection, orderBy, query } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export default function Projects() {
-  const projects = useSelector((state) => state.projects?.projects);
+  const projects = useSelector((state) => state.projects?.projects || []); // Fallback to an empty array
   const user = useSelector((state) => state.user?.user);
   const searchTerm = useSelector((state) =>
     state.searchTerm?.searchTerm ? state.searchTerm?.searchTerm : ""
@@ -29,7 +29,7 @@ export default function Projects() {
     return unsubscribe;
   }, [dispatch]);
 
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     if (searchTerm?.length > 0) {
@@ -39,10 +39,10 @@ export default function Projects() {
           return searchTerm
             .split("")
             .every((letter) => lowerCaseItem?.includes(letter));
-        })
+        }) || [] // Fallback to an empty array if filtering fails
       );
     } else {
-      setFilter(null);
+      setFilter([]);
     }
   }, [searchTerm, projects]);
 
@@ -50,11 +50,12 @@ export default function Projects() {
     <div className="mt-6 w-full px-6 flex items-center justify-center gap-6 flex-wrap">
       {user && (
         <>
-          {filter
+          {filter.length > 0
             ? filter.map((project, index) => (
                 <ProjectCard key={project.id} project={project} index={index} />
               ))
-            : projects.map((project, index) => (
+            : projects.length > 0 &&
+              projects.map((project, index) => (
                 <ProjectCard key={project.id} project={project} index={index} />
               ))}
         </>
