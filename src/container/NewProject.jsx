@@ -12,16 +12,25 @@ import { Alert, UserProfileDetails } from "../components";
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../config/firebase.config";
 import Split from "react-split";
+import { useLocation, useParams } from "react-router-dom";
 
-export default function NewProject() {
-  const [html, setHtml] = useState("");
-  const [css, setCss] = useState("");
-  const [js, setJs] = useState("");
+export default function NewProject({
+  initialHtml = "",
+  initialCss = "",
+  initialJs = "",
+  initialTitle = "Untitled",
+  isReadOnly = false,
+}) {
+  const [html, setHtml] = useState(initialHtml);
+  const [css, setCss] = useState(initialCss);
+  const [js, setJs] = useState(initialJs);
   const [output, setOutput] = useState("");
   const [isTitle, setIsTitle] = useState(false);
-  const [title, setTitle] = useState("Untitled");
+  const [title, setTitle] = useState(initialTitle);
   const [isalert, setIsAlert] = useState(false);
   const user = useSelector((state) => state?.user?.user || null);
+  const location = useLocation();
+  const { id: urlId } = useParams();
 
   useEffect(() => {
     updateOutput();
@@ -44,7 +53,7 @@ export default function NewProject() {
   };
 
   const saveProgram = async () => {
-    const id = `${Date.now()}`;
+    const id = location.pathname === "/newProject" ? `${Date.now()}` : urlId;
     const docs = {
       id: id,
       title: title,
@@ -74,7 +83,7 @@ export default function NewProject() {
       </AnimatePresence>
 
       {/* header section */}
-      <header className="w-full flex flex-col md:flex-row items-center justify-between px-6 sm:px-12 py-4">
+      <header className="w-full flex items-center justify-between px-12 py-4">
         <div className="flex items-center justify-center gap-6">
           <div className="flex flex-col justify-start items-start">
             {/* title */}
@@ -143,11 +152,11 @@ export default function NewProject() {
 
         {/* user section */}
         {user && (
-          <div className="flex gap-2 items-center justify-center mt-4 md:mt-0">
+          <div className="flex gap-2 items-center justify-center">
             <motion.button
               onClick={saveProgram}
               whileTap={{ scale: 0.9 }}
-              className="px-4 py-2 sm:px-6 sm:py-3 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
+              className="px-6 py-4 bg-primaryText cursor-pointer text-base text-primary font-semibold rounded-md"
             >
               Save
             </motion.button>
@@ -173,14 +182,12 @@ export default function NewProject() {
             {/* HTML Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaHtml5 className="text-lg sm:text-xl text-red-500" />
-                  <p className="text-primaryText font-semibold text-sm sm:text-base">
-                    HTML
-                  </p>
+                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaHtml5 className="text-xl text-red-500" />
+                  <p className="text-primaryText font-semibold">HTML</p>
                 </div>
               </div>
-              <div className="w-full px-2">
+              <div className="w-full px-2 overflow-y-scroll">
                 <CodeMirror
                   value={html}
                   height="100%"
@@ -196,14 +203,12 @@ export default function NewProject() {
             {/* CSS Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaCss3 className="text-lg sm:text-xl text-sky-500" />
-                  <p className="text-primaryText font-semibold text-sm sm:text-base">
-                    CSS
-                  </p>
+                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaCss3 className="text-xl text-sky-500" />
+                  <p className="text-primaryText font-semibold">CSS</p>
                 </div>
               </div>
-              <div className="w-full px-2">
+              <div className="w-full px-2 overflow-y-scroll">
                 <CodeMirror
                   value={css}
                   height="100%"
@@ -219,14 +224,12 @@ export default function NewProject() {
             {/* JS Editor */}
             <div className="w-full h-full flex flex-col items-start justify-start">
               <div className="w-full flex items-center justify-between">
-                <div className="bg-secondary px-2 sm:px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
-                  <FaJs className="text-lg sm:text-xl text-yellow-500" />
-                  <p className="text-primaryText font-semibold text-sm sm:text-base">
-                    JS
-                  </p>
+                <div className="bg-secondary px-4 py-2 border-t-4 flex items-center justify-center gap-3  border-t-gray-500">
+                  <FaJs className="text-xl text-yellow-500" />
+                  <p className="text-primaryText font-semibold">JS</p>
                 </div>
               </div>
-              <div className="w-full px-2">
+              <div className="w-full px-2 overflow-y-scroll">
                 <CodeMirror
                   value={js}
                   height="100%"
@@ -251,9 +254,10 @@ export default function NewProject() {
             <iframe
               title="Result"
               srcDoc={output}
-              className="w-full h-full"
               style={{
                 border: "none",
+                width: "100%",
+                height: "100%",
               }}
             />
           </div>
@@ -262,3 +266,147 @@ export default function NewProject() {
     </div>
   );
 }
+
+// import React, { useEffect, useState } from "react";
+// import { FaHtml5, FaCss3, FaJs } from "react-icons/fa";
+// import { MdFullscreen, MdFullscreenExit } from "react-icons/md";
+// import CodeMirror from "@uiw/react-codemirror";
+// import { javascript } from "@codemirror/lang-javascript";
+// import { useSelector } from "react-redux";
+// import { Alert, UserProfileDetails } from "../components";
+// import { setDoc, doc } from "firebase/firestore";
+// import { db } from "../config/firebase.config";
+// import "./styles.css";
+
+// const CodeEditor = ({
+//   title,
+//   language,
+//   value,
+//   onChange,
+//   isFullscreen,
+//   toggleFullscreen,
+// }) => {
+//   return (
+//     <div className={`code-editor ${isFullscreen ? "fullscreen" : ""}`}>
+//       <div className="editor-header">
+//         {language === "html" && <FaHtml5 className="editor-icon" />}
+//         {language === "css" && <FaCss3 className="editor-icon" />}
+//         {language === "js" && <FaJs className="editor-icon" />}
+//         <h3>{language.toUpperCase()}</h3>
+//         <button onClick={toggleFullscreen} className="fullscreen-toggle">
+//           {isFullscreen ? <MdFullscreenExit /> : <MdFullscreen />}
+//         </button>
+//       </div>
+//       <CodeMirror
+//         value={value}
+//         height="100%"
+//         extensions={[javascript({ jsx: true })]}
+//         theme={"dark"}
+//         onChange={onChange}
+//       />
+//     </div>
+//   );
+// };
+
+// export default function NewProject() {
+//   const [html, setHtml] = useState("");
+//   const [css, setCss] = useState("");
+//   const [js, setJs] = useState("");
+//   const [output, setOutput] = useState("");
+//   const [isTitle, setIsTitle] = useState(false);
+//   const [title, setTitle] = useState("Untitled");
+//   const [isAlert, setIsAlert] = useState(false);
+//   const [fullscreen, setFullscreen] = useState({
+//     html: false,
+//     css: false,
+//     js: false,
+//   });
+//   const user = useSelector((state) => state?.user?.user || null);
+
+//   useEffect(() => {
+//     updateOutput();
+//   }, [html, css, js]);
+
+//   const updateOutput = () => {
+//     const combinedOutput = `
+//       <html>
+//       <head>
+//         <style>${css}</style>
+//       </head>
+//       <body>
+//         ${html}
+//         <script>${js}</script>
+//       </body>
+//       </html>
+//     `;
+//     setOutput(combinedOutput);
+//   };
+
+//   const saveProgram = async () => {
+//     const id = `${Date.now()}`;
+//     const docs = {
+//       id: id,
+//       title: title,
+//       html: html,
+//       css: css,
+//       js: js,
+//       output: output,
+//       user: user,
+//     };
+
+//     await setDoc(doc(db, "Projects", id), docs)
+//       .then(() => setIsAlert(true))
+//       .catch((err) => console.log(err));
+
+//     setTimeout(() => {
+//       setIsAlert(false);
+//     }, 2000);
+//   };
+
+//   const toggleFullscreen = (lang) => {
+//     setFullscreen((prev) => ({ ...prev, [lang]: !prev[lang] }));
+//   };
+
+//   return (
+//     <div className="new-project">
+//       {/* Alert */}
+//       {isAlert && <Alert status={"Success"} alertMsg={"Project Saved..."} />}
+
+//       {/* Header */}
+//       <header className="project-header">
+//         <h1>{title}</h1>
+//         <UserProfileDetails />
+//         <button onClick={saveProgram}>Save</button>
+//       </header>
+
+//       {/* Code Editors */}
+//       <div className="code-editors">
+//         <CodeEditor
+//           title={title}
+//           language="html"
+//           value={html}
+//           onChange={(value) => setHtml(value)}
+//           isFullscreen={fullscreen.html}
+//           toggleFullscreen={() => toggleFullscreen("html")}
+//         />
+//         <CodeEditor
+//           language="css"
+//           value={css}
+//           onChange={(value) => setCss(value)}
+//           isFullscreen={fullscreen.css}
+//           toggleFullscreen={() => toggleFullscreen("css")}
+//         />
+//         <CodeEditor
+//           language="js"
+//           value={js}
+//           onChange={(value) => setJs(value)}
+//           isFullscreen={fullscreen.js}
+//           toggleFullscreen={() => toggleFullscreen("js")}
+//         />
+//       </div>
+
+//       {/* Result Section */}
+//       <iframe title="Result" srcDoc={output} className="result-iframe" />
+//     </div>
+//   );
+// }

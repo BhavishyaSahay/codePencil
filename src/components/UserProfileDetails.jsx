@@ -5,6 +5,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { signOutAction } from "../utils/helper";
 import { SlideUpOut } from "../animations";
+import { Menus } from "../utils/helper";
 
 export default function UserProfileDetails() {
   const user = useSelector((state) => state.user?.user);
@@ -47,7 +48,7 @@ export default function UserProfileDetails() {
           >
             {/* Menu Items */}
             {/* Example of mapping dynamic menus */}
-            {/* {Menus &&
+            {Menus &&
               Menus.map((menu) => (
                 <Link
                   to={menu.url}
@@ -56,7 +57,7 @@ export default function UserProfileDetails() {
                 >
                   {menu.name}
                 </Link>
-              ))} */}
+              ))}
 
             {/* Sign Out */}
             <motion.p

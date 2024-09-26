@@ -6,20 +6,13 @@ import {
   useNavigate,
   useLocation,
 } from "react-router-dom";
-import { Home, NewProject } from "./container";
+import { Home, NewProject } from "./container"; // Import ProjectDetails
+import ProjectDetails from "./container/ProjectDetails";
 import { auth, db } from "./config/firebase.config";
-import {
-  setDoc,
-  doc,
-  collection,
-  orderBy,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { Spinner } from "./components";
 import { useDispatch } from "react-redux";
 import { SET_USER } from "./context/actions/userActions";
-import { SET_PROJECTS } from "./context/actions/projectActions";
 
 export default function App() {
   const navigate = useNavigate();
@@ -36,7 +29,6 @@ export default function App() {
             console.log("user added");
             dispatch(SET_USER(userCred?.providerData[0]));
 
-            // Navigate to /home/projects only if the user is not already on another route like /newProject
             if (location.pathname === "/home/auth") {
               navigate("/home", { replace: true });
             }
@@ -46,7 +38,6 @@ export default function App() {
         navigate("/home/auth", { replace: true });
       }
 
-      // Close the spinner after 2 seconds
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
@@ -54,21 +45,6 @@ export default function App() {
 
     return () => unsubscribe();
   }, [navigate, location.pathname, dispatch]);
-
-  // useEffect(() => {
-  //   const projectQuery = query(
-  //     collection(db, "Projects"),
-  //     orderBy("id", "desc")
-  //   );
-
-  //   const unsubscribe = onSnapshot(projectQuery, (querySnaps) => {
-  //     const projectList = querySnaps.docs.map((doc) => doc.data());
-  //     dispatch(SET_PROJECTS(projectList));
-  //     console.log("projectList", projectList);
-  //   });
-
-  //   return unsubscribe;
-  // }, []);
 
   return (
     <>
@@ -81,7 +57,8 @@ export default function App() {
           <Routes>
             <Route path="/home/*" element={<Home />} />
             <Route path="/newProject" element={<NewProject />} />
-
+            <Route path="/projects/:id" element={<ProjectDetails />} />{" "}
+            {/* New Route */}
             {/* if route not matching */}
             <Route path="*" element={<Navigate to={"/home"} />} />
           </Routes>
