@@ -2,9 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { MdBookmark } from "react-icons/md";
+import { MdDelete } from "react-icons/md"; // Import the delete icon
 import { db } from "../config/firebase.config";
 import { SET_PROJECTS } from "../context/actions/projectActions";
-import { onSnapshot, collection, orderBy, query } from "firebase/firestore";
+import {
+  onSnapshot,
+  collection,
+  orderBy,
+  query,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 export default function Projects() {
@@ -22,7 +30,10 @@ export default function Projects() {
     );
 
     const unsubscribe = onSnapshot(projectQuery, (querySnaps) => {
-      const projectList = querySnaps.docs.map((doc) => doc.data());
+      const projectList = querySnaps.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })); // Include document ID
       dispatch(SET_PROJECTS(projectList));
     });
 
@@ -46,17 +57,35 @@ export default function Projects() {
     }
   }, [searchTerm, projects]);
 
+  const handleDelete = async (projectId) => {
+    const projectRef = doc(db, "Projects", projectId);
+    await deleteDoc(projectRef);
+    dispatch(
+      SET_PROJECTS(projects.filter((project) => project.id !== projectId))
+    ); // Update local state after deletion
+  };
+
   return (
     <div className="mt-6 w-full px-6 flex items-center justify-center gap-6 flex-wrap">
       {user && (
         <>
           {filter.length > 0
             ? filter.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  onDelete={handleDelete} // Pass delete function as prop
+                />
               ))
             : projects.length > 0 &&
               projects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                  onDelete={handleDelete} // Pass delete function as prop
+                />
               ))}
         </>
       )}
@@ -64,8 +93,9 @@ export default function Projects() {
   );
 }
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index, onDelete }) => {
   const navigate = useNavigate();
+
   const handleClick = () => {
     navigate(`/projects/${project.id}`); // Navigate to the project detail page
   };
@@ -128,6 +158,18 @@ const ProjectCard = ({ project, index }) => {
           whileHover={{ color: "#FFD700" }}
         >
           <MdBookmark className="text-primaryText text-3xl text-white" />
+        </motion.div>
+
+        {/* Delete icon */}
+        <motion.div
+          className="cursor-pointer p-2 bg-red-500 rounded-full hover:bg-red-400 transition-colors duration-300 ease-in-out"
+          whileTap={{ scale: 0.9 }}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent the card click event
+            onDelete(project.id); // Call the delete function
+          }}
+        >
+          <MdDelete className="text-white text-3xl" />
         </motion.div>
       </div>
     </motion.div>
